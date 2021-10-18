@@ -8,13 +8,13 @@ import logging
 import multiprocessing
 import time
 
-
+#DB Connection
 con = sqlite3.connect(":memory:")
 
 class CaseCountExtract:
 
     def __init__(self):
-
+        #Logging Config
         logging.captureWarnings(True)
         dtTime = datetime.now().strftime("%Y%m%d_%H%M%S")
         logging.basicConfig(
@@ -37,7 +37,9 @@ class CaseCountExtract:
             response[13],
             datetime.today().strftime("%Y-%m-%d")
             ))
+        #Define connection cursor
         cur = con.cursor()
+        #Execute Insert Statement
         cur.execute("INSERT INTO %s VALUES ('%s', '%s', %s, %s, %s, %s, '%s')" %(
             response[9].upper().replace(' ','_').replace('.','_').replace(',','_'),
             datetime.fromisoformat(response[8]).strftime("%Y-%m-%d"),
@@ -93,4 +95,5 @@ class CaseCountExtract:
 
     def validate_close(self):
         global con
+        #Close DB connection
         con.close()
