@@ -1,21 +1,28 @@
 import multiprocessing
 from multiprocessing import Process
 import Extract_Daily_CaseCount_MultiThreading
-extract = Extract_Daily_CaseCount_MultiThreading.CaseCountExtract()
 
-responseList = extract.create_request()
-extract.create_tables(responseList)
+try:
+    extract = Extract_Daily_CaseCount_MultiThreading.CaseCountExtract()
 
-#without multiprocessing
-#for response in responseList:
-#    extract.sample_fun(response)
+    responseList = extract.create_request()
+    extract.create_tables(responseList)
 
-#multiprocessing
-PROCESSES = multiprocessing.cpu_count()
-with multiprocessing.Pool(PROCESSES) as p:
-    result = p.map_async(extract.load_table,responseList)
-    print(result.get())
-    p.close()
-    p.join()
+    #without multiprocessing
+    #for response in responseList:
+    #    extract.sample_fun(response)
 
-extract.validate_close()
+    #multiprocessing
+    PROCESSES = multiprocessing.cpu_count()
+    with multiprocessing.Pool(PROCESSES) as p:
+        result = p.map_async(extract.load_table,responseList)
+        print(result.get())
+        p.close()
+        p.join()
+
+    extract.validate_close()
+
+except Exception as e:
+    print("Load failed: %s" %(e))
+else:
+    print("Load completed successfully")
