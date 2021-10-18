@@ -61,17 +61,14 @@ class CaseCountExtract:
         #Create a request and get response from API
         logging.info("Creating request to API...")
         print("Creating request to API...")
-#        responseAPI = requests.get("https://health.data.ny.gov/api/views/xdss-u53e/rows.json?accessType=DOWNLOAD")
-#        if responseAPI.status_code != 200:
-#            logging.error("Error: API not reachable. Exiting...")
-#            sys.exit(1)
+        responseAPI = requests.get("https://health.data.ny.gov/api/views/xdss-u53e/rows.json?accessType=DOWNLOAD")
+        if responseAPI.status_code != 200:
+            logging.error("Error: API not reachable. Exiting...")
+            sys.exit(1)
 
         logging.info("Response received. Creating JSON...")
         print("Response received. Creating JSON...")
-#        responseDict = responseAPI.json()
-        file1 = open("/opt/data/pnc_hdm/archive/SampleJson.json","r")
-        jsonVar = file1.read()
-        responseDict = json.loads(jsonVar)
+        responseDict = responseAPI.json()
         responseList = responseDict['data']
         return responseList
 
